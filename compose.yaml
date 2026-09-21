@@ -1,0 +1,16 @@
+services:
+  hotel-tv:
+    build: .
+    ports: ["18201:18201"]
+    environment:
+      PORT: 18201
+      HOTEL_TV_API_KEY: ${HOTEL_TV_API_KEY:-zhuatech-demo-key}
+      HOTEL_TV_DATA_FILE: /app/data/hotel-tv.json
+    volumes: ["hotel-tv-data:/app/data"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:18201/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+volumes:
+  hotel-tv-data:
